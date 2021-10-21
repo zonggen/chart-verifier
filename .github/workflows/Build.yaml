@@ -3,7 +3,7 @@ name: Build, Test and Release
 on:
     pull_request_target:
         types: [opened, synchronize, reopened]
-        branches: [ main ]
+        branches: [ main-test ]
 
 jobs:
     build:
@@ -13,6 +13,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
+              with:
+                path: "main"
 
             - name: Checkout
               uses: actions/checkout@v2
@@ -20,6 +22,9 @@ jobs:
                 ref: ${{ github.event.pull_request.head.ref }}
                 repository: ${{ github.event.pull_request.head.repo.full_name }}
                 path: "pr-branch"
+
+            - name: Debugging with tmate
+              uses: mxschmitt/action-tmate@v3.7
 
             - name: Setup Go
               uses: actions/setup-go@v2
